@@ -15,4 +15,12 @@ typedef struct __uart_comm {
 void init_uart_recv(uart_comm *);
 void uart_recv_int_handler(void);
 
+// CURTIS CHANGES
+void configure_eusart();
+void setup_uart_send();
+
+void uart_send(uart_comm *);
+// END CURTIS CHANGES
+
+
 #endif

@@ -343,41 +343,9 @@ void main(void) {
     LATBbits.LATB0 = 0x1;
     LATBbits.LATB0 = 0x0;
 
-    // Configuring pins for EUSART1
-    RCSTA1bits.SPEN = 0x1; // Set SPEN bit to 1
-    TRISCbits.TRISC7 = 0x1; // Set to 1 for EUSART1
-    TRISCbits.TRISC6 = 0x0; // Set to 0 for asynchronous master mode
+    // Configure bits for UART
+    setup_uart_send();
 
-    // Register 20-1: TXSTAx: TRANSMIT STATUS AND CONTROL REGISTER (ACCESS FADh, FA8h)
-    TXSTA1bits.TXEN = 0x1; // Transmit is enabled
-    TXSTA1bits.SYNC = 0x0; // Set EUSART mode to Asynchronous
-    TXSTA1bits.BRGH = 0x1; // High speed Baud Rate
-
-    // Register 20-2: RCSTAx: RECEIVE STATUS AND CONTROL REGISTER (ACCESS FACh, F9Ch)
-    RCSTA1bits.SPEN = 0x1; // Serial port is enabled
-
-    // Register 20-3: BAUDCONx: BAUD RATE CONTROL REGISTER (ACCESS F7Eh, F7Ch)
-    BAUDCON1bits.BRG16 = 0x1; // 16-bit Baud Rate Generator
-
-    // Set up baud rate generator for 57,600. See Baud Rate formula on page 328 of datasheet.
-    // Actual baud rate generated here is 57,692 which is 0.16% error.
-    SPBRGH1 = 0x0; // High byte
-    SPBRG1 = 0xCF; // Low byte, 207 in decimal
-
-    // Load Data into the TXREG1 register, which will start the transmission
-    TXREG1 = 0x55;
-
-    // Infinite for loop to test UART
-    //for(;;){}
-    //Set the I2C_ISR to high when we are in the interrupt handler
-    /*
-    DEBUG_ON(I2C_ISR);
-    DEBUG_OFF(I2C_ISR);
-    DEBUG_ON(I2C_ISR);
-    DEBUG_OFF(I2C_ISR);
-    DEBUG_ON(I2C_ISR);
-    DEBUG_OFF(I2C_ISR);
-    */
     // END CURTIS CHANGES
 
     // loop forever
@@ -435,7 +403,7 @@ void main(void) {
                         case 0xaa:
                         {
                             length = 2;
-                            msgbuffer[0] = 0x55;
+                            msgbuffer[0] = 0x51;
                             msgbuffer[1] = 0xAA;
                             break;
                         }
@@ -459,8 +427,8 @@ void main(void) {
                 case MSGT_SENSOR_IR1:
                 {
                     unsigned short int adValue = msgbuffer[1];
-                    adValue = adValue << 8 | msgbuffer[0];
-                    FromMainLow_sendmsg(sizeof(adValue), MSGT_UART_SEND_DATA, &adValue);
+                    adValue  = adValue << 8 | msgbuffer[0];
+                    FromMainLow_sendmsg( sizeof(adValue), MSGT_UART_SEND_DATA, &adValue);
                     break;
                 };
 
