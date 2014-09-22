@@ -7,7 +7,7 @@
 
 void init_ad()
 {
-
+    // Tristate Port a for bit to be output
     TRISAbits.TRISA0 = 1;
 
     // Interrupt bits
@@ -37,8 +37,7 @@ void atod_converter_interrupt_handler()
     adValue = highReg | lowReg;
     adValue = (9462/(adValue - 16.92))*2;
 
-
+    DEBUG_OFF(AD_GoDone);
     ToMainHigh_sendmsg(sizeof(adValue), MSGT_SENSOR_IR1, &adValue);
 
-    DEBUG_FLIP(AD_GoDone);
 }

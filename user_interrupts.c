@@ -36,6 +36,7 @@ void timer0_int_handler() {
 
 void timer1_int_handler() {
     DEBUG_FLIP(TIMER1_D);
+    DEBUG_ON(AD_GoDone);
     unsigned int result;
 
     // read the timer and then send an empty message to main()

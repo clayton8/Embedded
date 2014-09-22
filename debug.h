@@ -18,6 +18,7 @@ extern "C" {
 // Use definitions to make debugging configurable
 #define TIMER1_D LATBbits.LATB0
 #define AD_GoDone LATBbits.LATB1
+#define GET_SENSOR_MAIN LATBbits.LATB2
 // Define our debugging functions
 #ifdef DO_DEBUG
 #define DEBUG_ON(a) {\
@@ -32,6 +33,7 @@ a ^= 1;\
 #else
 #define DEBUG_ON(a)
 #define DEBUG_OFF(a)
+#define DEBUG_FLIP(a)
 #endif
 
 

@@ -334,14 +334,9 @@ void main(void) {
     // Set the tri state logic to output
     TRISBbits.TRISB0 = 0;
     TRISBbits.TRISB1 = 0;
+    TRISBbits.TRISB2 = 0;
+    TRISBbits.TRISB3 = 0;
 
-    // Sending signals high and low to get output on Logic Analyzer
-    LATBbits.LATB0 = 0x1;
-    LATBbits.LATB0 = 0x0;
-    LATBbits.LATB0 = 0x1;
-    LATBbits.LATB0 = 0x0;
-    LATBbits.LATB0 = 0x1;
-    LATBbits.LATB0 = 0x0;
 
     // Configure bits for UART
     setup_uart_send();
@@ -426,9 +421,12 @@ void main(void) {
 
                 case MSGT_SENSOR_IR1:
                 {
+                    DEBUG_ON(GET_SENSOR_MAIN);
                     unsigned short int adValue = msgbuffer[1];
                     adValue  = adValue << 8 | msgbuffer[0];
+
                     FromMainLow_sendmsg( sizeof(adValue), MSGT_UART_SEND_DATA, &adValue);
+                    DEBUG_OFF(GET_SENSOR_MAIN);
                     break;
                 };
 
